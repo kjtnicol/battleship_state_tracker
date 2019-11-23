@@ -4,7 +4,6 @@ using System.Text;
 
 namespace battleship_state_tracker
 {
-    
     class BattleshipStateTracker : IBattleShipStateTracker
     {
         private const int GRIDSIZE = 10;
@@ -63,11 +62,12 @@ namespace battleship_state_tracker
                                 {
                                     Console.WriteLine(shipName + " has been successfully located on the board.");
                                     shipBoard.printBoard();
-                                    i++;
+                                    i++;                                    
                                 } else
                                 {
-                                    Console.WriteLine("The input position is overlapped with the existing ship, please try again.");
+                                    Console.WriteLine("The input position is unavailable, please try again.");
                                 }
+                                break;
                             }
                             else
                             {
@@ -85,10 +85,6 @@ namespace battleship_state_tracker
                     }
                 }
             }
-                
-            
-            
-
         }
         public void inputAttack()
         {

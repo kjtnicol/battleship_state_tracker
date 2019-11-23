@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "battleship_state_tracker": {
+      "commandName": "Executable",
+      "executablePath": "C:\\work\\csharp\\battleship\\battleship_state_tracker\\Debug\\battleship_state_tracker.exe",
+      "workingDirectory": "C:\\work\\csharp\\battleship\\battleship_state_tracker\\Debug\\bin"
+    }
+  }
+}

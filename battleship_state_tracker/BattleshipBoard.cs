@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using static battleship_state_tracker.utils.Ext;
 
 namespace battleship_state_tracker
 {
@@ -14,6 +13,9 @@ namespace battleship_state_tracker
         {
             this.gridSize = gridSize;
             this.gridArray = new OneGrid[gridSize, gridSize];
+            for (int i = 0; i < gridSize; i++)
+                for (int j = 0; j < gridSize; j++)
+                    this.gridArray[i, j] = new OneGrid();
         }
 
         public GridStatus getPositionStatus(int x, int y)
@@ -50,29 +52,40 @@ namespace battleship_state_tracker
         {
             if (isHorizontal)
             {
+                if ( (y+size) > this.gridSize )
+                {
+                    return false;
+                }
+                bool isPositionAvailable = true;
                 for (int i=y; i < y+size; i++)
                 {
-                    if (this.gridArray[x, i].GridStatus != GridStatus.ShipPositioned)
+                    if (this.gridArray[x, i].GridStatus != GridStatus.Blank)
                     {
-                        this.gridArray[x, i].GridStatus = GridStatus.ShipPositioned;
-                    } else
-                    {
-                        return false;
+                        isPositionAvailable = false;
+                        break;
                     }
                 }
+                if (isPositionAvailable)
+                    for (int i = y; i < y + size; i++)
+                        this.gridArray[x, i].GridStatus = GridStatus.ShipPositioned;
             } else
             {
-                for (int i = x; i < x + size; i++)
+                if ((x + size) > this.gridSize)
                 {
-                    if (this.gridArray[i, y].GridStatus != GridStatus.ShipPositioned)
+                    return false;
+                }
+                bool isPositionAvailable = true;
+                for (int i=x; i < x+size; i++)
+                {
+                    if (this.gridArray[i, y].GridStatus != GridStatus.Blank)
                     {
-                        this.gridArray[i, y].GridStatus = GridStatus.ShipPositioned;
-                    }
-                    else
-                    {
-                        return false;
+                        isPositionAvailable = false;
+                        break;
                     }
                 }
+                if (isPositionAvailable)
+                    for (int i = x; i < x + size; i++)
+                        this.gridArray[i, y].GridStatus = GridStatus.ShipPositioned;
             }
             return true;
         }
