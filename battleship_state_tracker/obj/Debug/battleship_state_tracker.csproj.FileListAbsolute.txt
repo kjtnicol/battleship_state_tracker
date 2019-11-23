@@ -129,3 +129,4 @@ C:\work\csharp\battleship\battleship_state_tracker\obj\Debug\battleship_state_tr
 C:\work\csharp\battleship\battleship_state_tracker\obj\Debug\battleship_state_tracker.csproj.CopyComplete
 C:\work\csharp\battleship\battleship_state_tracker\obj\Debug\battleship_state_tracker.dll
 C:\work\csharp\battleship\battleship_state_tracker\obj\Debug\battleship_state_tracker.pdb
+C:\work\csharp\battleship\battleship_state_tracker\obj\Debug\battleship_state_tracker.csprojAssemblyReference.cache

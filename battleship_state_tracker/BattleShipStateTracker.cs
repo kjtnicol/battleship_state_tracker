@@ -7,6 +7,7 @@ namespace battleship_state_tracker
     class BattleshipStateTracker : IBattleShipStateTracker
     {
         private const int GRIDSIZE = 10;
+        private int shipPositionCount = 0;
         public static IDictionary<string, Tuple<int, int>> battleShipSizeAndNum =
             new Dictionary<string, Tuple<int, int>>()
             {
@@ -16,8 +17,43 @@ namespace battleship_state_tracker
                 {"Destroyer", new Tuple<int, int>(2, 4)},
             };
 
-        IBattleshipBoard shipBoard = new BattleshipBoard(GRIDSIZE);
+        private IBattleshipBoard shipBoard;
         
+        public BattleshipStateTracker()
+        {
+            this.calculateShipPositionCount();
+            this.shipBoard = new BattleshipBoard(GRIDSIZE, this.shipPositionCount);
+        }
+
+        private void calculateShipPositionCount()
+        {
+            foreach (var item in battleShipSizeAndNum)
+            {
+                this.shipPositionCount += (item.Value.Item1 * item.Value.Item2);
+            }
+        }
+
+        private Tuple<int, int> getPositionFromInput()
+        {
+            int positionX, positionY;
+            while (true)
+            {
+                string inputPositionStr = Console.ReadLine();
+                try
+                {
+                    var inputPositionStrArray = inputPositionStr.Split(',');
+                    positionX = Convert.ToInt32(inputPositionStrArray[0]);
+                    positionY = Convert.ToInt32(inputPositionStrArray[1]);
+                    break;
+                } catch
+                {
+                    Console.WriteLine("Incorrect format, please try again.");
+                }                
+            }            
+            
+            return new Tuple<int, int>(positionX, positionY);
+        }
+
         public void printInstruction()
         {
             Console.WriteLine("Total Board Size: " + GRIDSIZE + " X " + GRIDSIZE);
@@ -31,8 +67,6 @@ namespace battleship_state_tracker
 
         public void addBattleShipsToTheBoard()
         {
-            string inputPositionStr;
-            string[] inputPositionStrArray;
             foreach (var item in battleShipSizeAndNum)
             {
                 string shipName = item.Key;
@@ -43,13 +77,9 @@ namespace battleship_state_tracker
                 {
                     Console.Write("Input " + shipName + 
                         " Start Position (left-most or top, ex. 3,2) (remaining " + (shipNum - i) + "): ");
-                    inputPositionStr = Console.ReadLine();
+                    var inputPosition = this.getPositionFromInput();
                     try
                     {
-                        inputPositionStrArray = inputPositionStr.Split(',');
-                        int positionX = Convert.ToInt32(inputPositionStrArray[0]);
-                        int positionY = Convert.ToInt32(inputPositionStrArray[1]);
-
                         while (true)
                         {
                             Console.Write("Input Carrier Orientation, 'h' for Horizontal, 'v' for Vertial: ");
@@ -57,11 +87,11 @@ namespace battleship_state_tracker
                             if ((inputOrientation.ToLower().Equals("h") || (inputOrientation.ToLower().Equals("v"))))
                             {
                                 bool isHorizontal = (inputOrientation.ToLower().Equals("h")) ? true : false;
-                                bool isLocated = this.shipBoard.locateBattleShip(positionX, positionY, isHorizontal, shipSize);
+                                bool isLocated = this.shipBoard.locateBattleShip(inputPosition.Item1, inputPosition.Item2, isHorizontal, shipSize);
                                 if (isLocated)
                                 {
                                     Console.WriteLine(shipName + " has been successfully located on the board.");
-                                    shipBoard.printBoard();
+                                    this.shipBoard.printBoard();
                                     i++;                                    
                                 } else
                                 {
@@ -88,21 +118,27 @@ namespace battleship_state_tracker
         }
         public void inputAttack()
         {
-            Console.WriteLine("Input Attack Position (comma separated: ex. x,y).");
-            
-
+            while (true)
+            {
+                Console.Write("Input Attack Position (comma separated: ex. x,y): ");
+                var attackPosition = this.getPositionFromInput();
+                bool isHit = this.shipBoard.attackPosition(attackPosition.Item1, attackPosition.Item2);
+                if (isHit)
+                {
+                    Console.WriteLine("The attack worked with a hit!");
+                    this.shipBoard.printBoard();
+                }
+                else
+                {
+                    Console.WriteLine("The attack was missed!");
+                }
+                if (this.shipBoard.isLost())
+                {
+                    Console.WriteLine("All ships have been sunken, you lost.");
+                    break;
+                }
+            }
         }
                 
-        public void printStatus()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void startGame()
-        {
-            throw new NotImplementedException();
-        }
-
-        
     }
 }

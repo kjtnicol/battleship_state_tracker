@@ -8,10 +8,13 @@ namespace battleship_state_tracker
     {
         private int gridSize;
         private OneGrid[,] gridArray;
+        private int hitCount = 0;
+        private int shipPositionCount = 0;
 
-        public BattleshipBoard(int gridSize)
+        public BattleshipBoard(int gridSize, int shipPositionCount)
         {
             this.gridSize = gridSize;
+            this.shipPositionCount = shipPositionCount;
             this.gridArray = new OneGrid[gridSize, gridSize];
             for (int i = 0; i < gridSize; i++)
                 for (int j = 0; j < gridSize; j++)
@@ -92,7 +95,31 @@ namespace battleship_state_tracker
 
         public bool attackPosition(int x, int y)
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                try
+                {
+                    if (this.gridArray[x, y].GridStatus == GridStatus.ShipPositioned)
+                    {
+                        this.gridArray[x, y].GridStatus = GridStatus.Hit;
+                        this.hitCount++;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    Console.WriteLine("Unavailable position, please try again.");
+                }
+            }
+        }
+
+        public bool isLost()
+        {
+            return (this.hitCount >= this.shipPositionCount) ? true : false;
         }
     }
 }

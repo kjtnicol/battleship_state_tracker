@@ -9,7 +9,5 @@ namespace battleship_state_tracker
         void printInstruction();
         void addBattleShipsToTheBoard();
         void inputAttack();
-        void printStatus();
-        void startGame();
     }
 }

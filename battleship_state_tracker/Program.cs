@@ -10,7 +10,7 @@ namespace battleship_state_tracker
             BattleshipStateTracker battleshipStateTracker = new BattleshipStateTracker();
             battleshipStateTracker.printInstruction();
             battleshipStateTracker.addBattleShipsToTheBoard();
-            battleshipStateTracker.startGame();
+            battleshipStateTracker.inputAttack();
         }
     }
 }
