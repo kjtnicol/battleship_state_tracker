@@ -53,13 +53,13 @@ namespace battleship_state_tracker
 
         public bool locateBattleShip(int x, int y, bool isHorizontal, int size)
         {
+            bool isPositionAvailable=true;
             if (isHorizontal)
             {
                 if ( (y+size) > this.gridSize )
                 {
                     return false;
                 }
-                bool isPositionAvailable = true;
                 for (int i=y; i < y+size; i++)
                 {
                     if (this.gridArray[x, i].GridStatus != GridStatus.Blank)
@@ -77,7 +77,6 @@ namespace battleship_state_tracker
                 {
                     return false;
                 }
-                bool isPositionAvailable = true;
                 for (int i=x; i < x+size; i++)
                 {
                     if (this.gridArray[i, y].GridStatus != GridStatus.Blank)
@@ -90,30 +89,28 @@ namespace battleship_state_tracker
                     for (int i = x; i < x + size; i++)
                         this.gridArray[i, y].GridStatus = GridStatus.ShipPositioned;
             }
-            return true;
+            return isPositionAvailable;
         }
 
         public bool attackPosition(int x, int y)
         {
-            while (true)
+            try
             {
-                try
+                if (this.gridArray[x, y].GridStatus == GridStatus.ShipPositioned)
                 {
-                    if (this.gridArray[x, y].GridStatus == GridStatus.ShipPositioned)
-                    {
-                        this.gridArray[x, y].GridStatus = GridStatus.Hit;
-                        this.hitCount++;
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    this.gridArray[x, y].GridStatus = GridStatus.Hit;
+                    this.hitCount++;
+                    return true;
                 }
-                catch (IndexOutOfRangeException)
+                else
                 {
-                    Console.WriteLine("Unavailable position, please try again.");
+                    return false;
                 }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Console.WriteLine("Unavailable position, please try again.");
+                return false;
             }
         }
 

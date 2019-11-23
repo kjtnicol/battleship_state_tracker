@@ -12,9 +12,9 @@ namespace battleship_state_tracker
             new Dictionary<string, Tuple<int, int>>()
             {
                 {"Carrier", new Tuple<int, int>(5, 1)},
-                {"Battleboat", new Tuple<int, int>(4, 2)},
-                {"Cruiser", new Tuple<int, int>(3, 3)},
-                {"Destroyer", new Tuple<int, int>(2, 4)},
+                {"Battleboat", new Tuple<int, int>(4, 1)},
+                {"Cruiser", new Tuple<int, int>(3, 1)},
+                {"Destroyer", new Tuple<int, int>(2, 1)},
             };
 
         private IBattleshipBoard shipBoard;
@@ -58,7 +58,7 @@ namespace battleship_state_tracker
         {
             Console.WriteLine("Total Board Size: " + GRIDSIZE + " X " + GRIDSIZE);
             Console.WriteLine("Battleships on board are as follows.");
-            Console.WriteLine("Kind\tSize\tNo.");
+            Console.WriteLine("Kind\t\tSize\tNo.");
             foreach (var item in battleShipSizeAndNum)
             {
                 Console.WriteLine(item.Key + ":\t" + item.Value.Item1 + "\t" + item.Value.Item2);
